@@ -9,7 +9,7 @@ const Admin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('YOUR_API_GATEWAY_URL/send', {
+      const response = await fetch('https://wks8l3jqo5.execute-api.eu-north-1.amazonaws.com/prod/send', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
