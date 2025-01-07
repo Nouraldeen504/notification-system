@@ -1,0 +1,23 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-notificationsystem-dev-d34af-authRole",
+      "UnauthRoleArn": "arn:aws:iam::872515274195:role/amplify-notificationsystem-dev-d34af-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::872515274195:role/amplify-notificationsystem-dev-d34af-authRole",
+      "Region": "eu-north-1",
+      "DeploymentBucketName": "amplify-notificationsystem-dev-d34af-deployment",
+      "UnauthRoleName": "amplify-notificationsystem-dev-d34af-unauthRole",
+      "StackName": "amplify-notificationsystem-dev-d34af",
+      "StackId": "arn:aws:cloudformation:eu-north-1:872515274195:stack/amplify-notificationsystem-dev-d34af/388fda00-cd3f-11ef-9c2d-06212c024af9",
+      "AmplifyAppId": "d3labbsv2fjwrk"
+    },
+    "categories": {
+      "hosting": {
+        "amplifyhosting": {
+          "appId": "d3labbsv2fjwrk",
+          "type": "manual"
+        }
+      }
+    }
+  }
+}
