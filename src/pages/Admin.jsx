@@ -1,13 +1,35 @@
-// src/pages/Admin.jsx
+// Admin.jsx
 import { useState } from 'react';
 
 const Admin = () => {
   const [message, setMessage] = useState('');
   const [subject, setSubject] = useState('');
   const [status, setStatus] = useState('');
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const validateForm = () => {
+    if (!subject.trim()) {
+      setError('Subject is required');
+      return false;
+    }
+    if (!message.trim()) {
+      setError('Message is required');
+      return false;
+    }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setStatus('');
+
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const response = await fetch('https://wks8l3jqo5.execute-api.eu-north-1.amazonaws.com/prod/send', {
         method: 'POST',
@@ -17,15 +39,19 @@ const Admin = () => {
         body: JSON.stringify({ message, subject }),
       });
       
+      const data = await response.json();
+      
       if (response.ok) {
         setStatus('Messages sent successfully!');
         setMessage('');
         setSubject('');
       } else {
-        setStatus('Failed to send messages. Please try again.');
+        setError(data.error || 'Failed to send messages. Please try again.');
       }
     } catch (error) {
-      setStatus('Error occurred. Please try again later.');
+      setError('Error occurred. Please try again later.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -42,7 +68,10 @@ const Admin = () => {
             id="subject"
             value={subject}
             onChange={(e) => setSubject(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500 ${
+              error && !subject.trim() ? 'border-red-500' : 'border-gray-300'
+            }`}
+            disabled={isLoading}
             required
           />
         </div>
@@ -54,15 +83,20 @@ const Admin = () => {
             id="message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500 h-32"
+            className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500 h-32 ${
+              error && !message.trim() ? 'border-red-500' : 'border-gray-300'
+            }`}
+            disabled={isLoading}
             required
           />
         </div>
+        {error && <p className="mb-4 text-red-500">{error}</p>}
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+          className={`w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed`}
+          disabled={isLoading}
         >
-          Send Messages
+          {isLoading ? 'Sending...' : 'Send Messages'}
         </button>
       </form>
       {status && (
